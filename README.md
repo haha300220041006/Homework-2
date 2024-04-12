@@ -23,6 +23,7 @@ What is slippage in AMM, and how does Uniswap V2 address this issue? Please illu
 > Uniswap V2 Addressing Slippage:
 > 
 > Uniswap V2 partially addresses slippage through a concept called price impact. When you set a swap on Uniswap, you can specify a maximum acceptable price impact. This tells the AMM how much the price can deviate from the quoted price before the trade fails. A higher tolerance allows for larger trades but increases the risk of slippage.
+> function: require(amounts[amounts.length - 1] >= amountOutMin, 'UniswapV2Router: INSUFFICIENT_OUTPUT_AMOUNT'); where amountOutMin takes the price impact into account.
 
 ## Problem 3
 Please examine the mint function in the UniswapV2Pair contract. Upon initial liquidity minting, a minimum liquidity is subtracted. What is the rationale behind this design?

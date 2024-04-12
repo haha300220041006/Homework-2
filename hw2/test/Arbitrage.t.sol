@@ -76,12 +76,37 @@ contract Arbitrage is Test {
         uint256 tokensBefore = tokenB.balanceOf(arbitrager);
         console.log("Before Arbitrage tokenB Balance: %s", tokensBefore);
         tokenB.approve(address(router), 5 ether);
-        /**
-         * Please add your solution below
-         */
-        /**
-         * Please add your solution above
-         */
+        uint256 amount = 5; 
+        router.swapExactTokensForTokens(
+            amount,
+            0,  
+            address(tokenA),
+            address(arbitrager)
+        );
+        
+        router.swapExactTokensForTokens(
+        tokenA.balanceOf(arbitrager),  // Use all available tokenA
+            0,  // Minimum amount of tokenD to receive (0 allows for slippage)
+            address(tokenD),
+            address(arbitrager)
+        );
+
+        // Swap tokenD to tokenC
+        router.swapExactTokensForTokens(
+            tokenD.balanceOf(arbitrager),  // Use all available tokenD
+            0,  // Minimum amount of tokenC to receive (0 allows for slippage)
+            address(tokenC),
+            address(arbitrager)
+        );
+
+        // Swap tokenC back to tokenB to complete the arbitrage loop
+        router.swapExactTokensForTokens(
+            tokenC.balanceOf(arbitrager),  // Use all available tokenC
+            0,  // Minimum amount of tokenB to receive (0 allows for slippage)
+            address(tokenB),
+            address(arbitrager)
+        );
+        
         uint256 tokensAfter = tokenB.balanceOf(arbitrager);
         assertGt(tokensAfter, 20 ether);
         console.log("After Arbitrage tokenB Balance: %s", tokensAfter);
